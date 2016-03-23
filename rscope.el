@@ -326,7 +326,7 @@ The first hook returning a non nil value wins.")
     (if marker-buffer
 	(progn
 	  (when old-buffer-killable (kill-buffer old-buffer))
-	  (switch-to-buffer marker-buffer)
+	  (pop-to-buffer marker-buffer)
 	  (goto-char marker-point)))
     (set-marker marker nil)
     ))
