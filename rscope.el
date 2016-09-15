@@ -105,6 +105,11 @@ be removed by quitting the cscope buffer."
   :type 'boolean
   :group 'rscope)
 
+(defcustom rscope-files-extensions '("c" "cpp" "h")
+  "The list of file extensions to be used when generating cscope.files"
+  :type 'list
+  :group 'rscope)
+
 (defcustom rscope-hierarchies-shorten-filename t
   "*If non-nil, replace relative path names with the stripped of path, just
 as would have been gotten by using unix basename."
@@ -686,8 +691,10 @@ Only consider *.c and *.h files."
   (let* ((default-directory (if (string-suffix-p "/" dir) dir (concat dir "/")))
 	 (exit-code
 	  (process-file-shell-command
-	   (format "find -name '*.[ch]' -o -name '*.cpp' > cscope.files && cscope -b -q %s"
-		   (concat args)))))
+	   (format "find %s > cscope.files && cscope -b -q %s"
+		   (mapconcat (lambda(x)(format "-name '*.%s'" x))
+			      rscope-files-extensions " -o ")
+		    (concat args)))))
     (if (and (numberp exit-code) (= 0 exit-code))
 	(concat dir "/")
       (error "Cscope database generation failed, exit code=%d." exit-code))))
