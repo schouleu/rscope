@@ -441,6 +441,11 @@ with an optionnal arrow to show what was found."
     (kill-buffer result-buffer)
     (kill-buffer procbuf)))
 
+(defun rscope-generate-database ()
+  "Regenerate the cscope database."
+  (interactive)
+  (rscope-regenerate-cscope-database default-directory))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Result buffer helpers: internal navigation, buffer spawning
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
