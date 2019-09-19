@@ -689,15 +689,18 @@ The first hook returning non nil wins."
 Only consider *.c and *.h files."
   (message "Rscope: generating cscope database in : %s" dir)
   (let* ((default-directory (if (string-suffix-p "/" dir) dir (concat dir "/")))
+	 (cmd (format "find %s > cscope.files ; cscope -b -q %s"
+		      (format "-not -type l -a \\( %s \\)"
+			      (mapconcat (lambda(x)(format "-name '*.%s'" x))
+			      rscope-files-extensions " -o "))
+		      (concat args)))
 	 (exit-code
 	  (process-file-shell-command
-	   (format "find %s > cscope.files && cscope -b -q %s"
-		   (mapconcat (lambda(x)(format "-name '*.%s'" x))
-			      rscope-files-extensions " -o ")
-		    (concat args)))))
+	   cmd
+	   )))
     (if (and (numberp exit-code) (= 0 exit-code))
 	(concat dir "/")
-      (error "Cscope database generation failed, exit code=%d." exit-code))))
+      (error "Cscope database generation failed, exit code=%d.\ncmd=%s" exit-code cmd))))
 
 (defun rscope-autoinit-path-upwards-cscope_out (buffer)
   "Look the directory tree upwards, and report the first directory containing
