@@ -742,7 +742,9 @@ a file named configure.ac."
       (setq toplevel (tramp-make-tramp-file-name
 		      (tramp-file-name-method tramp-vec)
 		      (tramp-file-name-user tramp-vec)
+		      (tramp-file-name-domain tramp-vec)
 		      (tramp-file-name-host tramp-vec)
+		      (tramp-file-name-port tramp-vec)
 		      toplevel
 		      (tramp-file-name-hop tramp-vec))))
     (when (file-exists-p (directory-file-name toplevel))
@@ -862,7 +864,7 @@ call organizer to handle them within resultbuf."
 	(tramp-file
 	 (when (tramp-tramp-file-p default-directory)
 	   (with-parsed-tramp-file-name default-directory tp
-	     (tramp-make-tramp-file-name tp-method tp-user tp-host
+	     (tramp-make-tramp-file-name tp-method tp-user tp-domain tp-host tp-port
 					 (if (file-name-absolute-p file)
 					     file
 					   (concat tp-localname file)))))))
@@ -891,7 +893,7 @@ call organizer to handle them within resultbuf."
 	(tramp-file
 	 (when (tramp-tramp-file-p default-directory)
 	   (with-parsed-tramp-file-name default-directory tp
-	     (tramp-make-tramp-file-name tp-method tp-user tp-host
+	     (tramp-make-tramp-file-name tp-method tp-user tp-domain tp-host tp-port
 					 (if (file-name-absolute-p file)
 					     file
 					   (concat tp-localname file)))))))
